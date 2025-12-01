@@ -1,0 +1,47 @@
+{
+  "provider": "bedrock",
+  "credentials": {
+    "accessKey": "AKIAIOSFODNN7EXAMPLE",
+    "secretKey": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+    "region": "us-east-1"
+  },
+  "notes": {
+    "description": "AWS Bedrock configuration example",
+    "setup_instructions": [
+      "1. Create an IAM user in AWS Console with Bedrock permissions",
+      "2. Generate access keys for the IAM user",
+      "3. Replace the example credentials above with your actual credentials",
+      "4. Choose a region where Bedrock is available (us-east-1, us-west-2, etc.)",
+      "5. Ensure your IAM user has the 'bedrock:InvokeModel' permission"
+    ],
+    "required_iam_permissions": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "bedrock:InvokeModel"
+          ],
+          "Resource": "arn:aws:bedrock:*::foundation-model/*"
+        }
+      ]
+    },
+    "supported_regions": [
+      "us-east-1",
+      "us-west-2",
+      "ap-southeast-1",
+      "ap-northeast-1",
+      "eu-central-1"
+    ],
+    "supported_models": [
+      "anthropic.claude-3-sonnet-20240229-v1:0",
+      "anthropic.claude-3-haiku-20240307-v1:0"
+    ],
+    "security_notes": [
+      "Never commit actual credentials to version control",
+      "Use AWS IAM best practices (least privilege principle)",
+      "Rotate access keys regularly",
+      "Consider using AWS STS temporary credentials for enhanced security"
+    ]
+  }
+}

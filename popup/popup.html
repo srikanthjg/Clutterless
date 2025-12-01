@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM Tab Grouper</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <h1>LLM Tab Grouper</h1>
+    
+    <!-- Configuration Section -->
+    <div id="config-section">
+      <div class="config-status">
+        <span id="status-indicator" class="status-dot"></span>
+        <span id="status-text">Not configured</span>
+      </div>
+      
+      <div id="config-form" class="hidden">
+        <label for="provider-select">LLM Provider:</label>
+        <select id="provider-select">
+          <option value="">Select provider...</option>
+          <option value="bedrock">AWS Bedrock</option>
+          <option value="gemini">Google Gemini</option>
+          <option value="local">Local LLM</option>
+        </select>
+        
+        <!-- Bedrock credentials -->
+        <div id="bedrock-fields" class="credential-fields hidden">
+          <input type="text" id="bedrock-access-key" placeholder="AWS Access Key" />
+          <input type="password" id="bedrock-secret-key" placeholder="AWS Secret Key" />
+          <input type="password" id="bedrock-session-token" placeholder="AWS Session Token (optional)" />
+          <input type="text" id="bedrock-region" placeholder="Region (e.g., us-east-1)" />
+        </div>
+        
+        <!-- Gemini credentials -->
+        <div id="gemini-fields" class="credential-fields hidden">
+          <input type="password" id="gemini-api-key" placeholder="Gemini API Key" />
+        </div>
+        
+        <!-- Local LLM credentials -->
+        <div id="local-fields" class="credential-fields hidden">
+          <input type="text" id="local-endpoint" placeholder="Endpoint URL (e.g., http://localhost:11434/v1/chat/completions)" />
+          <input type="password" id="local-api-key" placeholder="API Key (optional)" />
+        </div>
+        
+        <button id="save-config-btn" class="btn btn-primary">Save Configuration</button>
+        <button id="cancel-config-btn" class="btn btn-secondary">Cancel</button>
+      </div>
+      
+      <button id="configure-btn" class="btn btn-secondary">Configure</button>
+    </div>
+    
+    <!-- Action Section -->
+    <div id="action-section" class="hidden">
+      <button id="auto-group-btn" class="btn btn-primary">Auto Group Tabs</button>
+      
+      <div id="custom-group-section">
+        <input type="text" id="custom-prompt" placeholder="Enter custom grouping instructions..." />
+        <button id="custom-group-btn" class="btn btn-primary">Custom Group</button>
+      </div>
+    </div>
+    
+    <!-- Loading Indicator -->
+    <div id="loading-indicator" class="hidden">
+      <div class="spinner"></div>
+      <p id="loading-text">Processing...</p>
+    </div>
+    
+    <!-- Message Display Area -->
+    <div id="message-area" class="hidden">
+      <div id="message-content"></div>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

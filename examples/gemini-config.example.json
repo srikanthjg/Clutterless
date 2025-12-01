@@ -1,0 +1,43 @@
+{
+  "provider": "gemini",
+  "credentials": {
+    "apiKey": "AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY"
+  },
+  "notes": {
+    "description": "Google Gemini configuration example",
+    "setup_instructions": [
+      "1. Go to Google AI Studio: https://makersuite.google.com/app/apikey",
+      "2. Sign in with your Google account",
+      "3. Click 'Create API Key' or 'Get API Key'",
+      "4. Copy the generated API key",
+      "5. Replace the example API key above with your actual key",
+      "6. The extension will use Gemini Pro model by default"
+    ],
+    "api_key_format": "Starts with 'AIza' followed by alphanumeric characters",
+    "supported_models": [
+      "gemini-pro",
+      "gemini-1.5-pro"
+    ],
+    "rate_limits": {
+      "free_tier": "60 requests per minute",
+      "note": "Rate limits may vary based on your Google Cloud project settings"
+    },
+    "pricing_info": {
+      "free_tier": "Available with generous limits",
+      "paid_tier": "Pay-as-you-go pricing for higher usage",
+      "link": "https://ai.google.dev/pricing"
+    },
+    "security_notes": [
+      "Never commit actual API keys to version control",
+      "Keep your API key confidential",
+      "Regenerate your key if it's been exposed",
+      "Monitor your API usage in Google AI Studio",
+      "Set up usage quotas to prevent unexpected charges"
+    ],
+    "troubleshooting": {
+      "invalid_key": "Verify the API key is copied correctly without extra spaces",
+      "quota_exceeded": "Check your quota limits in Google AI Studio",
+      "region_restrictions": "Some regions may have restricted access to Gemini API"
+    }
+  }
+}
