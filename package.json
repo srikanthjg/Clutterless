@@ -1,7 +1,7 @@
 {
-  "name": "llm-tab-grouper",
+  "name": "clutterless",
   "version": "1.0.0",
-  "description": "Chrome extension for intelligent tab grouping using LLMs",
+  "description": "Chrome extension for intelligent tab grouping using AI - Reduce tab clutter",
   "type": "module",
   "scripts": {
     "test": "vitest run",

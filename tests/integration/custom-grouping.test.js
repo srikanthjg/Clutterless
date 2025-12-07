@@ -23,6 +23,9 @@ describe('Custom Prompt Grouping Integration Tests', () => {
     createdGroups = [];
     groupedTabs = new Map();
 
+    // Reset global fetch mock to a spy
+    global.fetch = vi.fn();
+
     // Set up mock tabs with known content for testing
     mockTabs = [
       { id: 1, index: 0, title: 'React Documentation', url: 'https://react.dev/', windowId: 1 },
@@ -70,12 +73,22 @@ describe('Custom Prompt Grouping Integration Tests', () => {
       },
       storage: {
         local: {
-          get: vi.fn().mockResolvedValue({
-            config: {
-              provider: 'gemini',
-              credentials: { apiKey: 'test-api-key' },
-              configured: true
+          get: vi.fn().mockImplementation((keys) => {
+            const result = {};
+            if (keys === 'llm_config' || (Array.isArray(keys) && keys.includes('llm_config'))) {
+              result.llm_config = {
+                provider: 'gemini',
+                configured: true
+              };
             }
+            if (keys === 'llm_credentials' || (Array.isArray(keys) && keys.includes('llm_credentials'))) {
+              result.llm_credentials = {
+                provider: 'gemini',
+                credentials: { apiKey: 'test-api-key' },
+                timestamp: Date.now()
+              };
+            }
+            return Promise.resolve(result);
           }),
           set: vi.fn().mockResolvedValue()
         }
@@ -137,7 +150,7 @@ describe('Custom Prompt Grouping Integration Tests', () => {
 
     // Verify success
     expect(result.success).toBe(true);
-    expect(result.groupsCreated).toBe(3);
+    expect(result.data.groupsCreated).toBe(3);
 
     // Verify groups match user intent
     expect(createdGroups.map(g => g.title)).toEqual([
@@ -227,7 +240,7 @@ describe('Custom Prompt Grouping Integration Tests', () => {
 
     // Verify LLM still creates groups despite ambiguous prompt
     expect(result.success).toBe(true);
-    expect(result.groupsCreated).toBeGreaterThan(0);
+    expect(result.data.groupsCreated).toBeGreaterThan(0);
     expect(createdGroups.length).toBeGreaterThan(0);
   });
 
@@ -240,7 +253,7 @@ describe('Custom Prompt Grouping Integration Tests', () => {
 
     // Verify validation error
     expect(result.success).toBe(false);
-    expect(result.error).toContain('empty');
+    expect(result.message).toContain('grouping instructions');
 
     // Verify no groups were created
     expect(createdGroups.length).toBe(0);
@@ -274,7 +287,7 @@ describe('Custom Prompt Grouping Integration Tests', () => {
 
     // Verify summary information is included
     expect(result.success).toBe(true);
-    expect(result.groupsCreated).toBe(2);
+    expect(result.data.groupsCreated).toBe(2);
     expect(result.message).toBeDefined();
     expect(result.message).toContain('2');
   });
@@ -319,7 +332,7 @@ describe('Custom Prompt Grouping Integration Tests', () => {
 
     // Verify LLM handles complex criteria
     expect(result.success).toBe(true);
-    expect(result.groupsCreated).toBe(3);
+    expect(result.data.groupsCreated).toBe(3);
     expect(createdGroups.length).toBe(3);
   });
 
@@ -332,7 +345,7 @@ describe('Custom Prompt Grouping Integration Tests', () => {
 
     // Verify validation error
     expect(result.success).toBe(false);
-    expect(result.error).toBeDefined();
+    expect(result.message).toBeDefined();
 
     // Verify no API call was made
     expect(global.fetch).not.toHaveBeenCalled();

@@ -317,15 +317,23 @@ function hideLoading() {
 
 // Show message
 function showMessage(text, type = 'error') {
-  messageContent.textContent = text;
+  // Clear existing content
+  messageArea.innerHTML = '';
+  
+  // Create icon element
+  const icon = document.createElement('span');
+  icon.className = 'message-icon';
+  messageArea.appendChild(icon);
+  
+  // Create content element
+  const content = document.createElement('div');
+  content.id = 'message-content';
+  content.textContent = text;
+  messageArea.appendChild(content);
+  
+  // Set message type class
   messageArea.className = type;
   messageArea.classList.remove('hidden');
-  
-  // Remove any existing retry button
-  const existingRetryBtn = messageArea.querySelector('.retry-btn');
-  if (existingRetryBtn) {
-    existingRetryBtn.remove();
-  }
   
   // Auto-hide success and warning messages after 5 seconds
   if (type === 'success' || type === 'warning') {
@@ -337,15 +345,23 @@ function showMessage(text, type = 'error') {
 
 // Show message with retry option for transient failures
 function showMessageWithRetry(text, action, data = null) {
-  messageContent.textContent = text + ' ';
+  // Clear existing content
+  messageArea.innerHTML = '';
+  
+  // Create icon element
+  const icon = document.createElement('span');
+  icon.className = 'message-icon';
+  messageArea.appendChild(icon);
+  
+  // Create content element
+  const content = document.createElement('div');
+  content.id = 'message-content';
+  content.textContent = text + ' ';
+  messageArea.appendChild(content);
+  
+  // Set message type class
   messageArea.className = 'error';
   messageArea.classList.remove('hidden');
-  
-  // Remove any existing retry button
-  const existingRetryBtn = messageArea.querySelector('.retry-btn');
-  if (existingRetryBtn) {
-    existingRetryBtn.remove();
-  }
   
   // Create retry button
   const retryBtn = document.createElement('button');
@@ -371,18 +387,14 @@ function showMessageWithRetry(text, action, data = null) {
     }
   });
   
-  messageArea.appendChild(retryBtn);
+  content.appendChild(retryBtn);
 }
 
 // Hide message
 function hideMessage() {
   messageArea.classList.add('hidden');
-  
-  // Remove retry button if present
-  const retryBtn = messageArea.querySelector('.retry-btn');
-  if (retryBtn) {
-    retryBtn.remove();
-  }
+  // Clear content to reset for next message
+  messageArea.innerHTML = '';
 }
 
 // Send message to service worker

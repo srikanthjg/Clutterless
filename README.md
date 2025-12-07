@@ -1,4 +1,4 @@
-# LLM Tab Grouper
+# Clutterless
 
 A Chrome extension that uses AI to intelligently organize browser tabs into logical groups. Reduce tab clutter and improve productivity with automatic or custom-prompted tab organization powered by AWS Bedrock, Google Gemini, or local LLM models.
 
@@ -11,6 +11,7 @@ A Chrome extension that uses AI to intelligently organize browser tabs into logi
 - **Smart Metadata Extraction**: Intelligently extracts page titles, URLs, and content previews
 - **Batch Processing**: Handles large numbers of tabs efficiently (50+ tabs)
 - **Privacy-Focused**: Only sends necessary metadata to the LLM, excludes sensitive data
+- **Modern UI Design**: Polished interface with rounded corners, gradients, smooth animations, and enhanced accessibility
 
 ## Installation
 
@@ -21,7 +22,7 @@ A Chrome extension that uses AI to intelligently organize browser tabs into logi
 3. Enable "Developer mode" using the toggle in the top right
 4. Click "Load unpacked"
 5. Select the directory containing this extension
-6. The LLM Tab Grouper icon should appear in your Chrome toolbar
+6. The Clutterless icon should appear in your Chrome toolbar
 
 ### Dependencies
 
@@ -264,6 +265,103 @@ Provide specific instructions for how you want tabs organized:
 4. Ensure model is loaded in your LLM server
 5. Try a different model if current one isn't responding
 
+## UI Design & Visual Enhancements
+
+Clutterless features a modern, polished user interface built with a comprehensive design system approach. The UI enhancements focus on creating a professional, accessible, and visually appealing experience.
+
+### Design System
+
+The extension uses a **CSS design token system** for consistency and maintainability:
+
+- **Color Gradients**: Smooth gradient backgrounds for buttons and messages
+  - Primary gradient (purple): Used for main action buttons
+  - Success gradient (green): Used for success messages
+  - Error gradient (red): Used for error messages
+  - Background gradient (light gray): Subtle background for the main container
+
+- **Spacing Scale**: Consistent spacing throughout the interface
+  - Extra small (4px), Small (8px), Medium (12px), Large (16px), Extra large (24px)
+
+- **Border Radius Scale**: Modern rounded corners on all elements
+  - Small (6px): Input fields
+  - Medium (8px): Buttons and messages
+  - Large (12px): Card containers
+  - Extra large (16px): Main popup window
+  - Full (50%): Circular elements like loading spinner
+
+- **Shadow System**: Depth and elevation through shadows
+  - Small shadow: Base buttons and elements
+  - Medium shadow: Cards and hover states
+  - Large shadow: Popup window
+  - Focus shadow: Interactive elements when focused
+
+- **Typography**: Clean, readable text hierarchy
+  - System font stack for native feel
+  - Semibold weights for buttons and headings
+  - 14px base font size for comfortable reading
+
+### Visual Features
+
+**Smooth Animations**
+- Fade-in animation when popup opens (200ms)
+- Slide-in animation for success/error messages (400ms)
+- Smooth rotation for loading spinner
+- Scale-down effect on button clicks (150ms)
+- Hover effects with subtle lift and shadow enhancement
+- Shake animation for error messages to draw attention
+
+**Interactive Feedback**
+- Gradient backgrounds that brighten on hover
+- Colored shadows on input focus
+- Visual depth through layered shadows
+- Animated checkmark icon for successful operations
+- Smooth transitions between all UI states
+
+**Responsive Layout**
+- Expandable configuration section with smooth height transitions
+- Adaptive layout when switching between LLM providers
+- Text wrapping for long error messages
+- Expandable textarea for custom prompts
+- Centered layout when no configuration exists
+
+### Accessibility
+
+The UI is designed with **WCAG 2.1 AA compliance** in mind:
+
+- **Color Contrast**: All text meets minimum 4.5:1 contrast ratio
+  - Primary gradient with white text: 4.5:1+ contrast
+  - Success gradient with white text: 4.5:1+ contrast
+  - Error gradient with white text: 7:1+ contrast (AAA compliant)
+
+- **Keyboard Navigation**: Full keyboard accessibility
+  - Visible focus indicators on all interactive elements
+  - Logical tab order through the interface
+  - Enhanced focus states for keyboard users
+
+- **Reduced Motion Support**: Respects user preferences
+  - Animations disabled for users with motion sensitivity
+  - Transitions reduced to minimal durations
+  - `prefers-reduced-motion` media query support
+
+- **Touch Targets**: Minimum 44px height for all buttons
+- **Screen Reader Support**: Semantic HTML and ARIA labels
+
+### Browser Compatibility
+
+The UI uses modern CSS features with graceful fallbacks:
+
+- **CSS Custom Properties**: Full support in Chrome 88+
+- **CSS Gradients**: Solid color fallbacks for older browsers
+- **Flexbox & Grid**: Full support in target browsers
+- **Progressive Enhancement**: Core functionality works without advanced CSS
+
+### Performance Optimization
+
+- **GPU-Accelerated Animations**: Uses `transform` and `opacity` for 60fps animations
+- **Efficient Selectors**: Minimal specificity conflicts
+- **Will-Change Property**: Applied judiciously for smooth animations
+- **Paint Optimization**: Minimized repaints and reflows
+
 ## Privacy & Security
 
 - **Credential Storage**: API keys are encrypted using Chrome's secure storage API
@@ -328,3 +426,7 @@ For issues, questions, or feature requests, please open an issue on GitHub.
 - Built with Chrome Extension Manifest V3
 - Powered by AWS Bedrock, Google Gemini, and local LLM providers
 - Inspired by the need for better tab management in modern browsers
+
+## Repository
+
+https://github.com/srikanthjg/Clutterless

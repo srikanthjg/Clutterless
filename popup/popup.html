@@ -3,23 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LLM Tab Grouper</title>
+  <title>Clutterless</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <div class="container">
-    <h1>LLM Tab Grouper</h1>
-    
-    <!-- Configuration Section -->
-    <div id="config-section">
-      <div class="config-status">
-        <span id="status-indicator" class="status-dot"></span>
-        <span id="status-text">Not configured</span>
+  <div class="container popup-container">
+    <div class="fade-in-wrapper">
+      <h1 class="popup-title">Clutterless</h1>
+      
+      <!-- Configuration Section -->
+      <div id="config-section" class="card config-card">
+      <div class="config-status status-indicator">
+        <span id="status-indicator" class="status-dot status-dot-error"></span>
+        <span id="status-text" class="status-text">Not configured</span>
       </div>
       
-      <div id="config-form" class="hidden">
-        <label for="provider-select">LLM Provider:</label>
-        <select id="provider-select">
+      <div id="config-form" class="form config-form hidden">
+        <label for="provider-select" class="form-label">LLM Provider:</label>
+        <select id="provider-select" class="form-select form-input">
           <option value="">Select provider...</option>
           <option value="bedrock">AWS Bedrock</option>
           <option value="gemini">Google Gemini</option>
@@ -27,50 +28,51 @@
         </select>
         
         <!-- Bedrock credentials -->
-        <div id="bedrock-fields" class="credential-fields hidden">
-          <input type="text" id="bedrock-access-key" placeholder="AWS Access Key" />
-          <input type="password" id="bedrock-secret-key" placeholder="AWS Secret Key" />
-          <input type="password" id="bedrock-session-token" placeholder="AWS Session Token (optional)" />
-          <input type="text" id="bedrock-region" placeholder="Region (e.g., us-east-1)" />
+        <div id="bedrock-fields" class="credential-fields form-group hidden">
+          <input type="text" id="bedrock-access-key" class="form-input form-text-input" placeholder="AWS Access Key" />
+          <input type="password" id="bedrock-secret-key" class="form-input form-password-input" placeholder="AWS Secret Key" />
+          <input type="password" id="bedrock-session-token" class="form-input form-password-input" placeholder="AWS Session Token (optional)" />
+          <input type="text" id="bedrock-region" class="form-input form-text-input" placeholder="Region (e.g., us-east-1)" />
         </div>
         
         <!-- Gemini credentials -->
-        <div id="gemini-fields" class="credential-fields hidden">
-          <input type="password" id="gemini-api-key" placeholder="Gemini API Key" />
+        <div id="gemini-fields" class="credential-fields form-group hidden">
+          <input type="password" id="gemini-api-key" class="form-input form-password-input" placeholder="Gemini API Key" />
         </div>
         
         <!-- Local LLM credentials -->
-        <div id="local-fields" class="credential-fields hidden">
-          <input type="text" id="local-endpoint" placeholder="Endpoint URL (e.g., http://localhost:11434/v1/chat/completions)" />
-          <input type="password" id="local-api-key" placeholder="API Key (optional)" />
+        <div id="local-fields" class="credential-fields form-group hidden">
+          <input type="text" id="local-endpoint" class="form-input form-text-input" placeholder="Endpoint URL (e.g., http://localhost:11434/v1/chat/completions)" />
+          <input type="password" id="local-api-key" class="form-input form-password-input" placeholder="API Key (optional)" />
         </div>
         
-        <button id="save-config-btn" class="btn btn-primary">Save Configuration</button>
-        <button id="cancel-config-btn" class="btn btn-secondary">Cancel</button>
+        <button id="save-config-btn" class="btn btn-primary action-btn">Save Configuration</button>
+        <button id="cancel-config-btn" class="btn btn-secondary action-btn">Cancel</button>
       </div>
       
-      <button id="configure-btn" class="btn btn-secondary">Configure</button>
+      <button id="configure-btn" class="btn btn-secondary action-btn">Configure</button>
     </div>
     
-    <!-- Action Section -->
-    <div id="action-section" class="hidden">
-      <button id="auto-group-btn" class="btn btn-primary">Auto Group Tabs</button>
-      
-      <div id="custom-group-section">
-        <input type="text" id="custom-prompt" placeholder="Enter custom grouping instructions..." />
-        <button id="custom-group-btn" class="btn btn-primary">Custom Group</button>
+      <!-- Action Section -->
+      <div id="action-section" class="action-section hidden">
+        <button id="auto-group-btn" class="btn btn-primary action-btn">Auto Group Tabs</button>
+        
+        <div id="custom-group-section" class="custom-group-section">
+          <input type="text" id="custom-prompt" class="form-input form-text-input custom-prompt-input" placeholder="Enter custom grouping instructions..." />
+          <button id="custom-group-btn" class="btn btn-primary action-btn">Custom Group</button>
+        </div>
       </div>
-    </div>
-    
-    <!-- Loading Indicator -->
-    <div id="loading-indicator" class="hidden">
-      <div class="spinner"></div>
-      <p id="loading-text">Processing...</p>
+      
+      <!-- Loading Indicator -->
+      <div id="loading-indicator" class="loading-indicator hidden">
+        <div class="spinner loading-spinner"></div>
+        <p id="loading-text" class="loading-text">Processing...</p>
+      </div>
     </div>
     
     <!-- Message Display Area -->
-    <div id="message-area" class="hidden">
-      <div id="message-content"></div>
+    <div class="slide-in-wrapper">
+      <div id="message-area" class="message message-container hidden"></div>
     </div>
   </div>
   <script src="popup.js"></script>

@@ -1,6 +1,6 @@
 # Integration Tests
 
-This directory contains end-to-end integration tests for the LLM Tab Grouper Chrome extension.
+This directory contains end-to-end integration tests for the Clutterless Chrome extension.
 
 ## Overview
 

@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "LLM Tab Grouper",
+  "name": "Clutterless",
   "version": "1.0.0",
   "description": "Intelligently organize browser tabs using AI (AWS Bedrock, Google Gemini, or Local LLM)",
   "permissions": [

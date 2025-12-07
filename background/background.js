@@ -1,4 +1,4 @@
-// Service worker for LLM Tab Grouper extension
+// Service worker for Clutterless extension
 // Handles message routing and coordinates tab grouping operations
 
 import { getAllTabs, createGroup } from '../lib/tab-manager.js';
@@ -902,3 +902,13 @@ async function testLocalEndpoint(endpoint, apiKey) {
     throw error;
   }
 }
+
+// Export functions for testing
+export {
+  handleAutoGroup,
+  handleCustomGroup,
+  collectTabMetadata,
+  applyGrouping,
+  handleGetConfig as getConfig,
+  handleSaveConfig as saveConfig
+};

@@ -1,6 +1,6 @@
 # Configuration Examples
 
-This directory contains example configuration files for different LLM providers supported by the LLM Tab Grouper extension.
+This directory contains example configuration files for different LLM providers supported by the Clutterless extension.
 
 ## Overview
 
@@ -16,7 +16,7 @@ These example files are for **reference only** and show the structure of configu
 
 ### Configuration Steps
 
-1. Click the LLM Tab Grouper extension icon in Chrome
+1. Click the Clutterless extension icon in Chrome
 2. Click "Configure" button
 3. Select your preferred provider
 4. Enter your credentials based on the examples below
