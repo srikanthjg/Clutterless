@@ -4,7 +4,7 @@ A Chrome extension that uses AI to intelligently organize browser tabs into logi
 
 ## Screenshot
 
-![Clutterless Extension Interface](assets/screenshots/clutterless-screenshot.png)
+![Clutterless Extension Interface](assets/screenshots/clutterless2.png)
 
 
 ## Features
