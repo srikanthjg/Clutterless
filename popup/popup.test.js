@@ -21,6 +21,28 @@ describe('Popup UI Integration Tests', () => {
       runtime: {
         sendMessage: vi.fn(),
         lastError: null
+      },
+      storage: {
+        local: {
+          get: vi.fn((keys, callback) => {
+            if (callback) {
+              callback({});
+            }
+            return Promise.resolve({});
+          }),
+          set: vi.fn((items, callback) => {
+            if (callback) {
+              callback();
+            }
+            return Promise.resolve();
+          }),
+          remove: vi.fn((keys, callback) => {
+            if (callback) {
+              callback();
+            }
+            return Promise.resolve();
+          })
+        }
       }
     };
     

@@ -4,11 +4,17 @@
   "description": "Chrome extension for intelligent tab grouping using AI - Reduce tab clutter",
   "type": "module",
   "scripts": {
+    "build": "node build.js",
     "test": "vitest run",
     "test:watch": "vitest"
   },
+  "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.0.0",
+    "@aws-sdk/credential-providers": "^3.0.0"
+  },
   "devDependencies": {
     "@vitest/ui": "^1.0.0",
+    "esbuild": "^0.27.1",
     "jsdom": "^27.2.0",
     "vitest": "^1.0.0"
   }

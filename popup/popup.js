@@ -26,6 +26,43 @@ const messageContent = document.getElementById('message-content');
 document.addEventListener('DOMContentLoaded', async () => {
   await loadConfiguration();
   setupEventListeners();
+  
+  // Restore popup state if available
+  const { popupState } = await chrome.storage.local.get('popupState');
+  
+  if (popupState && (Date.now() - popupState.timestamp) < 300000) { // 5 minutes
+    providerSelect.value = popupState.provider;
+    handleProviderChange();
+    
+    if (popupState.provider === 'bedrock') {
+      document.getElementById('bedrock-access-key').value = popupState.accessKey || '';
+      document.getElementById('bedrock-secret-key').value = popupState.secretKey || '';
+      document.getElementById('bedrock-session-token').value = popupState.sessionToken || '';
+      document.getElementById('bedrock-region').value = popupState.region || '';
+    } else if (popupState.provider === 'gemini') {
+      document.getElementById('gemini-api-key').value = popupState.geminiApiKey || '';
+    } else if (popupState.provider === 'local') {
+      document.getElementById('local-endpoint').value = popupState.localEndpoint || '';
+      document.getElementById('local-api-key').value = popupState.localApiKey || '';
+    }
+  }
+});
+
+// Save popup state when window loses focus
+window.addEventListener('blur', () => {
+  const state = {
+    provider: providerSelect.value,
+    accessKey: document.getElementById('bedrock-access-key').value,
+    secretKey: document.getElementById('bedrock-secret-key').value,
+    sessionToken: document.getElementById('bedrock-session-token').value,
+    region: document.getElementById('bedrock-region').value,
+    geminiApiKey: document.getElementById('gemini-api-key').value,
+    localEndpoint: document.getElementById('local-endpoint').value,
+    localApiKey: document.getElementById('local-api-key').value,
+    timestamp: Date.now()
+  };
+  
+  chrome.storage.local.set({ popupState: state });
 });
 
 // Load and display current configuration status
@@ -120,6 +157,72 @@ function clearCredentialInputs() {
   document.getElementById('local-api-key').value = '';
 }
 
+// Validate Bedrock credentials format
+function validateBedrockCredentials(credentials) {
+  const { accessKey, secretKey, region, sessionToken } = credentials;
+  
+  // Validate access key format
+  // AKIA = permanent credentials (20 chars total)
+  // ASIA = temporary credentials (20 chars total, requires session token)
+  if (!accessKey) {
+    return {
+      valid: false,
+      error: 'Access Key is required.'
+    };
+  }
+  
+  const isPermanent = accessKey.startsWith('AKIA');
+  const isTemporary = accessKey.startsWith('ASIA');
+  
+  if (!isPermanent && !isTemporary) {
+    return {
+      valid: false,
+      error: 'Invalid Access Key format. Should start with AKIA (permanent) or ASIA (temporary).'
+    };
+  }
+  
+  if (accessKey.length !== 20) {
+    return {
+      valid: false,
+      error: 'Invalid Access Key length. Should be exactly 20 characters.'
+    };
+  }
+  
+  // Temporary credentials require session token
+  if (isTemporary && !sessionToken) {
+    return {
+      valid: false,
+      error: 'Temporary credentials (ASIA...) require a session token.'
+    };
+  }
+  
+  // Validate secret key length (40 chars)
+  if (!secretKey || secretKey.length !== 40) {
+    return {
+      valid: false,
+      error: 'Invalid Secret Key format. Should be exactly 40 characters.'
+    };
+  }
+  
+  // Validate region format (xx-xxxx-N)
+  if (!region || !region.match(/^[a-z]{2}-[a-z]+-\d$/)) {
+    return {
+      valid: false,
+      error: 'Invalid region format. Example: us-east-1'
+    };
+  }
+  
+  // Optional session token validation
+  if (sessionToken && sessionToken.length < 100) {
+    return {
+      valid: false,
+      error: 'Session token appears invalid. It should be a long string (typically 500+ characters).'
+    };
+  }
+  
+  return { valid: true };
+}
+
 // Validate configuration inputs
 function validateConfiguration(provider, credentials) {
   if (!provider) {
@@ -130,6 +233,13 @@ function validateConfiguration(provider, credentials) {
   if (provider === 'bedrock') {
     if (!credentials.accessKey || !credentials.secretKey || !credentials.region) {
       showMessage('Please fill in all AWS Bedrock credentials', 'error');
+      return false;
+    }
+    
+    // Perform format validation
+    const validation = validateBedrockCredentials(credentials);
+    if (!validation.valid) {
+      showMessage(validation.error, 'error');
       return false;
     }
   } else if (provider === 'gemini') {
@@ -199,6 +309,9 @@ async function saveConfiguration() {
     hideLoading();
     
     if (response.success) {
+      // Clear popup state after successful save
+      await chrome.storage.local.remove('popupState');
+      
       // Clear and hide the form
       hideConfigForm();
       

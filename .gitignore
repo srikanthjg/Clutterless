@@ -36,6 +36,7 @@ build/
 # Debug files
 debug-bedrock.js
 test-bedrock.js
+test-bedrock-integration.js
 
 # Python
 __pycache__/

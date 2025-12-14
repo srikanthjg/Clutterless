@@ -828,6 +828,72 @@ async function handleClearConfig() {
   }
 }
 
+// Validate Bedrock credentials format
+function validateBedrockCredentials(credentials) {
+  const { accessKey, secretKey, region, sessionToken } = credentials;
+  
+  // Validate access key format
+  // AKIA = permanent credentials (20 chars total)
+  // ASIA = temporary credentials (20 chars total, requires session token)
+  if (!accessKey) {
+    return {
+      valid: false,
+      error: 'Access Key is required.'
+    };
+  }
+  
+  const isPermanent = accessKey.startsWith('AKIA');
+  const isTemporary = accessKey.startsWith('ASIA');
+  
+  if (!isPermanent && !isTemporary) {
+    return {
+      valid: false,
+      error: 'Invalid Access Key format. Should start with AKIA (permanent) or ASIA (temporary).'
+    };
+  }
+  
+  if (accessKey.length !== 20) {
+    return {
+      valid: false,
+      error: 'Invalid Access Key length. Should be exactly 20 characters.'
+    };
+  }
+  
+  // Temporary credentials require session token
+  if (isTemporary && !sessionToken) {
+    return {
+      valid: false,
+      error: 'Temporary credentials (ASIA...) require a session token.'
+    };
+  }
+  
+  // Validate secret key length (40 chars)
+  if (!secretKey || secretKey.length !== 40) {
+    return {
+      valid: false,
+      error: 'Invalid Secret Key format. Should be exactly 40 characters.'
+    };
+  }
+  
+  // Validate region format (xx-xxxx-N)
+  if (!region || !region.match(/^[a-z]{2}-[a-z]+-\d$/)) {
+    return {
+      valid: false,
+      error: 'Invalid region format. Example: us-east-1'
+    };
+  }
+  
+  // Optional session token validation
+  if (sessionToken && sessionToken.length < 100) {
+    return {
+      valid: false,
+      error: 'Session token appears invalid. It should be a long string (typically 500+ characters).'
+    };
+  }
+  
+  return { valid: true };
+}
+
 // Validate credentials based on provider
 function validateCredentials(config) {
   const { provider, credentials } = config;
@@ -840,6 +906,12 @@ function validateCredentials(config) {
     case 'bedrock':
       if (!credentials.accessKey || !credentials.secretKey || !credentials.region) {
         return 'AWS credentials require access key, secret key, and region';
+      }
+      
+      // Perform format validation
+      const validation = validateBedrockCredentials(credentials);
+      if (!validation.valid) {
+        return validation.error;
       }
       break;
     

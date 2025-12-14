@@ -22,20 +22,36 @@ A Chrome extension that uses AI to intelligently organize browser tabs into logi
 
 ### From Source (Development)
 
-1. Clone or download this repository
-2. Open Chrome and navigate to `chrome://extensions/`
-3. Enable "Developer mode" using the toggle in the top right
-4. Click "Load unpacked"
-5. Select the directory containing this extension
-6. The Clutterless icon should appear in your Chrome toolbar
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/srikanthjg/Clutterless.git
+   cd Clutterless
+   ```
 
-### Dependencies
+2. **Build the extension:**
+   ```bash
+   npm install
+   npm run build
+   ```
+   
+   This creates a `dist/` folder with the bundled extension (~400KB with AWS SDK included).
 
-Install Node.js dependencies for development and testing:
+3. **Load in Chrome:**
+   - Open Chrome and navigate to `chrome://extensions/`
+   - Enable "Developer mode" using the toggle in the top right
+   - Click "Load unpacked"
+   - **⚠️ CRITICAL: Navigate to and select the `dist/` folder** (not the root folder)
+   
+   ```
+   ✅ CORRECT:   /path/to/Clutterless/dist/
+   ❌ WRONG:     /path/to/Clutterless/
+   ```
 
-```bash
-npm install
-```
+4. The Clutterless icon should appear in your Chrome toolbar
+
+**Note:** After making code changes, rebuild with `npm run build` and reload the extension in Chrome.
+
+For detailed build information, see [BUILD.md](BUILD.md).
 
 ## Configuration
 
@@ -54,8 +70,11 @@ AWS Bedrock provides access to Claude and other foundation models.
 1. Click the extension icon
 2. Select "AWS Bedrock" as your provider
 3. Enter your AWS credentials:
-   - **Access Key ID**: Your AWS access key (e.g., `AKIAIOSFODNN7EXAMPLE`)
-   - **Secret Access Key**: Your AWS secret key
+   - **Access Key ID**: Your AWS access key
+     - Permanent credentials: `AKIA...` (20 characters)
+     - Temporary credentials: `ASIA...` (20 characters, requires session token)
+   - **Secret Access Key**: Your AWS secret key (40 characters)
+   - **Session Token**: Required for temporary credentials (ASIA prefix)
    - **Region**: AWS region where Bedrock is available (e.g., `us-east-1`, `us-west-2`)
 4. Click "Save Configuration"
 
@@ -138,6 +157,37 @@ docker run -p 8080:8080 localai/localai:latest
 
 # Endpoint: http://localhost:8080/v1/chat/completions
 ```
+
+## Troubleshooting
+
+### Extension won't load / Module resolution errors
+
+**Problem:** Error message about "Failed to resolve module specifier @aws-sdk/client-bedrock-runtime"
+
+**Solution:** You're loading from the wrong folder. Make sure you:
+1. Run `npm run build` first
+2. Load the `dist/` folder (not the root folder) in Chrome
+3. See [QUICK_START.md](QUICK_START.md) for detailed troubleshooting
+
+### Credential validation errors
+
+**Problem:** "Invalid Access Key format" errors
+
+**Solution:** 
+- Permanent credentials (AKIA prefix): Don't require session token
+- Temporary credentials (ASIA prefix): Must include session token
+- Access keys are exactly 20 characters
+- Secret keys are exactly 40 characters
+
+### After code changes
+
+1. Rebuild: `npm run build`
+2. Go to `chrome://extensions`
+3. Click the reload icon on the Clutterless extension
+
+## Development
+
+See [BUILD.md](BUILD.md) for build system details and [TESTING.md](TESTING.md) for testing information.
 
 ## Contributing
 

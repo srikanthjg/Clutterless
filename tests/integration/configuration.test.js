@@ -99,9 +99,10 @@ describe('Configuration Integration Tests', () => {
 
       const result = await saveConfig(invalidConfig);
 
-      // Bedrock doesn't validate credential format, only presence
-      // This test should pass as all required fields are present
-      expect(result.success).toBe(true);
+      // Bedrock validates credential format per Requirements 1.7
+      // Invalid access key format should fail validation
+      expect(result.success).toBe(false);
+      expect(result.message).toContain('Access Key');
     });
 
     it('should reject Bedrock config with missing credentials', async () => {
@@ -396,9 +397,10 @@ describe('Configuration Integration Tests', () => {
 
       const result = await saveConfig(invalidConfig);
 
-      // Bedrock doesn't validate credential format, only presence
-      // This test should pass as all required fields are present
-      expect(result.success).toBe(true);
+      // Bedrock validates credential format per Requirements 1.7
+      // Invalid credentials should fail validation with clear error
+      expect(result.success).toBe(false);
+      expect(result.message).toBeDefined();
     });
 
     it('should display clear error for invalid Gemini API key', async () => {
